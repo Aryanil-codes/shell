@@ -98,10 +98,10 @@ void reveal(int number_of_args, char args[][100], char * cwd)
             while(counter<=number_of_args){
                 for (int i = 1; i < strlen(args[counter]); i++)
                 {
-                    printf("outside i = %d\n and counter = %d\n\n",i,counter);
+                    // printf("outside i = %d\n and counter = %d\n\n",i,counter);
                     if (args[counter][i]=='l')
                     {
-                        printf("inside l - counter - %d, i = %d\n",counter,i);
+                        // printf("inside l - counter - %d, i = %d\n",counter,i);
                         l = true;
                     }
                     else if(args[counter][i]=='a')
