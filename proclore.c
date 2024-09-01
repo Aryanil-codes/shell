@@ -2,15 +2,31 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include<errno.h>
 
 #include<unistd.h>
 
 #include"proclore.h"
 
+void get_executable_path(int pid, char *exe_path, int size) {
+    char proc_path[2045];
+    snprintf(proc_path, sizeof(proc_path), "/proc/%d/exe", pid);
+
+    ssize_t len = readlink(proc_path, exe_path, size - 1);
+    if (len == -1) {
+        fprintf(stderr, "Error reading symbolic link: %s\n", strerror(errno));
+        exe_path[0] = '\0'; // Clear the path on error
+        return;
+    }
+
+    exe_path[len] = '\0';  // Null-terminate the string
+}
 
 void proclore(int count, char commands[][100]){
+    int pid;
     if(count == 0){
         int shell_pid = getpid(); // Get the current process ID
+        pid=shell_pid;
         char path[256];
         sprintf(path, "/proc/%d/status", shell_pid); // Construct the path to the status file
 
@@ -36,7 +52,7 @@ void proclore(int count, char commands[][100]){
         fclose(fp);
     }
     else if(count == 1){
-        int pid = atoi(commands[1]);
+        pid = atoi(commands[1]);
         char path[256];
         sprintf(path, "/proc/%d/status", pid); // Construct the path to the status file
 
@@ -60,6 +76,17 @@ void proclore(int count, char commands[][100]){
         }
 
         fclose(fp);
+    }
+
+    // pid_t pid = (pid_t)atoi(argv[1]); // Convert argument to pid_t
+    char exe_path[2048];
+
+    get_executable_path(pid, exe_path, sizeof(exe_path));
+
+    if (strlen(exe_path) > 0) {
+        printf("Executable path for PID %d: %s\n", pid, exe_path);
+    } else {
+        printf("Could not retrieve executable path for PID %d\n", pid);
     }
     
     
