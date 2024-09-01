@@ -38,7 +38,9 @@ void execute(int count, char tokens[100][100]) {
     } else {
         // Parent process
         wait(NULL);
+        return;
     }
+    return;
 }
 
 void bg(int count, char tokens[100][100]) {
@@ -79,20 +81,24 @@ void fg(int count, char tokens[100][100],char *buffer_cwd,char *current_dir) {
         {
             // printf("%d, %s,%s",count,tokens[1],buffer_cwd);
             hop(count-1,tokens,buffer_cwd,current_dir);
+            return;
         }
         else if(!strcmp(tokens[0],"reveal")){
             reveal(count-1,tokens, current_dir);
+            return;
         }
         else{
             execute(count,tokens);
+            return;
         }
 
 
     // Null-terminate the token array for execvp
     char *args[count + 2];  // +2 for the command and NULL terminator
     for (int i = 0; i < count; i++) {
-        // args[i] = tokens[i];
         args[i]= tokens[i];
+        // strcpy(args[i],tokens[i]);
+
         // printf("count - %d\n",count);
         // printf("args[%d]: %s\n", i, args[i]);
     }

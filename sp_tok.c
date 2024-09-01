@@ -16,6 +16,8 @@
 #include "reveal.h"
 #include "execute.h"
 #include "proclore.h"
+#include "log.h"
+#include "seek.h"
 
 void bg_exec(char *inp)
 {
@@ -64,6 +66,16 @@ void fg_exec(char *inp, char *home, char *cwd)
     else if(!strcmp(tokens[0], "proclore"))
     {
         proclore(count - 1, tokens);
+        return;
+    }
+    // else if(!strcmp(tokens[0], "seek"))
+    // {
+    //     seek(count - 1, tokens);
+    //     return;
+    // }
+    else if(!strcmp(tokens[0], "log"))
+    {
+        main_log(count - 1, tokens);
         return;
     }
     else

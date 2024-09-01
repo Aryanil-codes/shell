@@ -1,6 +1,3 @@
-#ifndef HOP_H
-#define HOP_H
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -82,5 +79,3 @@ void hop(int count, char commands[][100], char* home, char* current_dir){
 
     return;
 }
-
-#endif

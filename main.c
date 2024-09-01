@@ -8,6 +8,7 @@
 #include "token.h"
 #include "reveal.h"
 #include "execute.h"
+#include "log.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -83,6 +84,8 @@ int main()
             fgets(inp, 1024, stdin);
             printf("Input: %s\n", inp);
 
+            store_log(inp);
+
             trim_newline(inp);
             trim_spaces(inp);
             // printf("Input after spaces: %s\n", inp);
@@ -101,6 +104,8 @@ int main()
 
             printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, final_cwd);
             fgets(inp, 1024, stdin);
+
+            store_log(inp);
             
             trim_newline(inp);
             trim_spaces(inp);
