@@ -45,7 +45,7 @@ void trim_spaces2(char *str)
 
 void tokenize(char *inp, char *cwd, char* home)
 {
-    printf("Input: %s\n", inp);
+    // printf("Input: %s\n", inp);
 
     char temp_inp[4096];
     char *saveptr;
@@ -57,10 +57,10 @@ void tokenize(char *inp, char *cwd, char* home)
     {
         strcpy(temp, token);
     
-        printf("Line: %s\n", temp);
+        // printf("Line: %s\n", temp);
         trim_spaces2(temp);
         // temp[strlen(temp)-1]='\0'; // maniac
-        printf("Line: %s\n", temp);
+        // printf("Line: %s\n", temp);
         amp_tokenize(temp, cwd, home);
         token = strtok_r(NULL, ";", &saveptr);
     }
@@ -83,7 +83,7 @@ int count_char(const char *str, char ch)
 void amp_tokenize(char *line, char* cwd, char* home)
 {
     int count = count_char(line, '&');
-    printf("Num BG: %d\n", count);
+    // printf("Num BG: %d\n", count);
 
     char *saveptr;
     char *token = strtok_r(line, "&", &saveptr);
@@ -91,10 +91,10 @@ void amp_tokenize(char *line, char* cwd, char* home)
     {
         char command[4096];
         strcpy(command, token);
-        printf("Command: %s\n", command);
+        // printf("Command: %s\n", command);
         if (count > 0)
         {
-            printf("BG: ");
+            // printf("BG: ");
             bg_exec(command);
             count--;
         }

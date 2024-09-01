@@ -15,7 +15,7 @@ void execute(int count, char tokens[100][100]) {
     char *args[count + 1];  
     for (int i = 0; i < count; i++) {
         args[i] = tokens[i];
-        printf("args[%d]: %s\n", i, args[i]);
+        // printf("args[%d]: %s\n", i, args[i]);
     }
     args[count] = NULL;  
 

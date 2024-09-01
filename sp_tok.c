@@ -35,7 +35,6 @@ void bg_exec(char *inp)
 
 void fg_exec(char *inp, char *home, char *cwd)
 {
-    printf("FG: %s\n", inp);
 
     if (strstr(inp, "seek") != NULL) {
         char *new_str = inp + 5;
