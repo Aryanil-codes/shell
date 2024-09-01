@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "reveal.h": "c",
+        "token.h": "c"
+    }
+}
