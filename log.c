@@ -19,25 +19,21 @@ void clean_log() {
     char buffer[MAX_LINES][MAX_LINE_LENGTH];
     int line_count = 0;
 
-    // Read all lines into buffer
     while(fgets(buffer[line_count], MAX_LINE_LENGTH, fptr) != NULL) {
         line_count++;
     }
     fclose(fptr);
 
     if(line_count <= 15) {
-        // Do nothing if less than or equal to 15 lines
         return;
     }
 
-    // Open the file again for writing, truncating it
     fptr = fopen("histfile", "w");
     if(fptr == NULL) {
         perror("Error opening histfile");
         return;
     }
 
-    // Write only the last 15 lines to the file
     for(int i = line_count - 15; i < line_count; i++) {
         fputs(buffer[i], fptr);
     }
@@ -47,7 +43,6 @@ void clean_log() {
 
 void store_log(char *inp) {
     if (strstr(inp, "log") != NULL) {
-        // Do not store the command if it contains "log"
         return;
     }
 
@@ -61,23 +56,21 @@ void store_log(char *inp) {
     char last_line[MAX_LINE_LENGTH];
     last_line[0] = '\0';
 
-    // Read the last line of the file
+
     while (fgets(last_line, MAX_LINE_LENGTH, fptr) != NULL) {
-        // Intentionally empty to get the last line
     }
     fclose(fptr);
 
-    // Trim newline character from last_line
+
     if (last_line[strlen(last_line) - 1] == '\n') {
         last_line[strlen(last_line) - 1] = '\0';
     }
 
-    // Do not add if it matches the last line
+    //lastline match
     if (strcmp(last_line, inp) == 0) {
         return;
     }
 
-    // Open the file in append mode to add the new input
     fptr = fopen("histfile", "a");
     if (fptr == NULL) {
         perror("Error opening histfile");
@@ -99,13 +92,12 @@ void view_log() {
     char buffer[MAX_LINES][MAX_LINE_LENGTH];
     int line_count = 0;
 
-    // Read all lines into buffer
+
     while (fgets(buffer[line_count], MAX_LINE_LENGTH, fptr) != NULL) {
         line_count++;
     }
     fclose(fptr);
 
-    // Display the last 15 lines or fewer if the file is shorter
     int start_line = (line_count > 15) ? line_count - 15 : 0;
     for (int i = start_line; i < line_count; i++) {
         printf("%s", buffer[i]);
@@ -133,7 +125,6 @@ void execute_log(int num) {
     char buffer[MAX_LINES][MAX_LINE_LENGTH];
     int line_count = 0;
 
-    // Read all lines into buffer
     while (fgets(buffer[line_count], MAX_LINE_LENGTH, fptr) != NULL) {
         line_count++;
     }
@@ -144,7 +135,7 @@ void execute_log(int num) {
         return;
     }
 
-    // The line to execute is from the bottom
+    // bottom exec
     int target_line = line_count - num;
     if (target_line < 0 || target_line >= line_count) {
         printf("Invalid line number.\n");
@@ -153,7 +144,7 @@ void execute_log(int num) {
 
     printf("Executing: %s", buffer[target_line]);
 
-    // Execute the command using system()
+    
     if (system(buffer[target_line]) == -1) {
         perror("Error executing command");
     }

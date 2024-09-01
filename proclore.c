@@ -15,20 +15,20 @@ void get_executable_path(int pid, char *exe_path, int size) {
     ssize_t len = readlink(proc_path, exe_path, size - 1);
     if (len == -1) {
         fprintf(stderr, "Error reading symbolic link: %s\n", strerror(errno));
-        exe_path[0] = '\0'; // Clear the path on error
+        exe_path[0] = '\0'; 
         return;
     }
 
-    exe_path[len] = '\0';  // Null-terminate the string
+    exe_path[len] = '\0';  
 }
 
 void proclore(int count, char commands[][100]){
     int pid;
     if(count == 0){
-        int shell_pid = getpid(); // Get the current process ID
+        int shell_pid = getpid(); 
         pid=shell_pid;
         char path[256];
-        sprintf(path, "/proc/%d/status", shell_pid); // Construct the path to the status file
+        sprintf(path, "/proc/%d/status", shell_pid); 
 
         FILE *fp = fopen(path, "r");
         if (fp == NULL) {
@@ -39,7 +39,7 @@ void proclore(int count, char commands[][100]){
         char line[256];
         while (fgets(line, sizeof(line), fp)) {
             if (strncmp(line, "State:", 6) == 0) {
-                printf("Process State: %s", line);
+                printf("Process State: %s", line);  // remove the extra...trim the line
             } else if (strncmp(line, "PPid:", 5) == 0) {
                 printf("Parent PID: %s", line);
             } else if (strncmp(line, "Gid:", 4) == 0) {
@@ -54,7 +54,7 @@ void proclore(int count, char commands[][100]){
     else if(count == 1){
         pid = atoi(commands[1]);
         char path[256];
-        sprintf(path, "/proc/%d/status", pid); // Construct the path to the status file
+        sprintf(path, "/proc/%d/status", pid); 
 
         FILE *fp = fopen(path, "r");
         if (fp == NULL) {
@@ -78,7 +78,7 @@ void proclore(int count, char commands[][100]){
         fclose(fp);
     }
 
-    // pid_t pid = (pid_t)atoi(argv[1]); // Convert argument to pid_t
+
     char exe_path[2048];
 
     get_executable_path(pid, exe_path, sizeof(exe_path));

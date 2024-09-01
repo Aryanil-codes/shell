@@ -3,26 +3,24 @@
 #include<unistd.h>
 #include"hop.h"
 
-//not complete
-
 
 char dash_cmd[4096];
 
 void hop(int count, char commands[][100], char* home, char* current_dir){
     char cwd[1024];
     printf("hop called\n");
-    // strcpy(dash_cmd,current_dir);
+   
     if (count==0)
     {
         chdir(home);
         getcwd(cwd,sizeof(cwd));
         printf("%s\n",cwd);
-        printf("0 rocks\n");
+        // printf("0 rocks\n");
     }
     else if(count == 1){
         // printf("zskhfLZDgskjggoahie\n");
-        printf("calling cwd - %s\n",cwd);
-        printf("dash cmd - %s\n",dash_cmd);
+        // printf("calling cwd - %s\n",cwd);
+        // printf("dash cmd - %s\n",dash_cmd);
         getcwd(cwd,sizeof(cwd));
         if (!strcmp("-",commands[1])){
             // strcpy(temp,current_dir);
@@ -48,7 +46,7 @@ void hop(int count, char commands[][100], char* home, char* current_dir){
         while(counter<=count){
             //this is if "-" comes with the hop as multi arg
             if (!strcmp("-",commands[counter])){
-                    printf("skillissue much\n");
+                    // printf("skillissue much\n");
                     getcwd(cwd,sizeof(cwd));
                 if(chdir(dash_cmd)==-1){
                     perror("chdir failed for dash\n");

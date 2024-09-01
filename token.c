@@ -21,22 +21,21 @@ void trim_spaces2(char *str)
     char *start = str;
     char *end = str + strlen(str);
 
-    // Trim leading spaces
+
     while (isspace((unsigned char)*start))
     {
         start++;
     }
 
-    // Trim trailing spaces
+
     while (end > start && isspace((unsigned char)*end))
     {
         end--;
     }
 
-    // Null-terminate the trimmed string
+
     *(end + 1) = '\0';
 
-    // Move the trimmed string to the start
     if (start != str)
     {
         memmove(str, start, (end - start + 1));
@@ -57,7 +56,7 @@ void tokenize(char *inp, char *cwd, char* home)
     while (token != NULL)
     {
         strcpy(temp, token);
-        // trim_newline2(temp);
+    
         printf("Line: %s\n", temp);
         trim_spaces2(temp);
         // temp[strlen(temp)-1]='\0'; // maniac
@@ -107,21 +106,3 @@ void amp_tokenize(char *line, char* cwd, char* home)
     }
 }
 
-// // Assume these functions are defined elsewhere
-// void bg_exec(const char *command) {
-//     // Background execution implementation
-// }
-
-// void fg_exec(const char *command, char* home, char* cwd) {
-//     // Foreground execution implementation
-// }
-
-// int main() {
-//     char input[] = "command1; command2 & command3; command4";
-//     char cwd[] = "/current/working/directory";
-//     char home[] = "/home/user";
-
-//     tokenize(input, cwd, home);
-
-//     return 0;
-// }

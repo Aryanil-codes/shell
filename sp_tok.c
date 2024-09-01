@@ -1,6 +1,3 @@
-#ifndef SP_TOK_H
-#define SP_TOK_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -100,7 +97,7 @@ void fg_exec(char *inp, char *home, char *cwd)
         // printf("args[%d]: %s\n", i, args[i]);
     }
     args[count] = NULL;     // NULL terminator for execvp
-    args[count + 1] = NULL; // Safety NULL pointer at the end
+    args[count + 1] = NULL; //safe
 
     int fake_pid = fork();
     if (fake_pid < 0)
@@ -112,7 +109,7 @@ void fg_exec(char *inp, char *home, char *cwd)
     {
         // Child process
         execvp(args[0], args);
-        // If execvp fails
+    
         perror("execvp failed");
         exit(EXIT_FAILURE);
     }
@@ -122,5 +119,3 @@ void fg_exec(char *inp, char *home, char *cwd)
         wait(NULL);
     }
 }
-
-#endif

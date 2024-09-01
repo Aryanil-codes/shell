@@ -12,12 +12,12 @@
 #include"reveal.h"
 
 void execute(int count, char tokens[100][100]) {
-    char *args[count + 1];  // +1 for NULL terminator
+    char *args[count + 1];  
     for (int i = 0; i < count; i++) {
         args[i] = tokens[i];
         printf("args[%d]: %s\n", i, args[i]);
     }
-    args[count] = NULL;  // NULL terminator for execvp
+    args[count] = NULL;  
 
     int fake_pid = fork();
     if (fake_pid < 0) {
@@ -27,20 +27,20 @@ void execute(int count, char tokens[100][100]) {
     else if (fake_pid == 0) {
         // Child process
         execvp(args[0], args);
-        perror("execvp failed"); // This will only print if execvp fails
+        perror("execvp failed"); 
         exit(EXIT_FAILURE);
     } else {
-        // Parent process
-        wait(NULL);  // Wait for the child process to finish
+        
+        wait(NULL); 
     }
 }
 
 void bg(int count, char tokens[100][100]) {
-    char *args[count + 1];  // +1 for NULL terminator
+    char *args[count + 1];  
     for (int i = 0; i < count; i++) {
         args[i] = tokens[i];
     }
-    args[count] = NULL;  // NULL terminator for execvp
+    args[count] = NULL;  
 
     int fake_pid = fork();
     if (fake_pid < 0) {
@@ -48,14 +48,13 @@ void bg(int count, char tokens[100][100]) {
         exit(EXIT_FAILURE);
     } 
     else if (fake_pid == 0) {
-        // Child process
         printf("Background process started with PID %d\n", getpid());
         execvp(args[0], args);
-        perror("execvp failed");  // This will only print if execvp fails
+        perror("execvp failed");  
         exit(EXIT_FAILURE);
     } else {
         printf("Parent process started background process with PID %d\n", fake_pid);
-        // Parent process does not wait
+        
     }
 }
 

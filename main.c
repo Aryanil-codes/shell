@@ -27,22 +27,19 @@ void trim_spaces(char *str)
     char *start = str;
     char *end = str + strlen(str);
 
-    // Trim leading spaces
     while (isspace((unsigned char)*start))
     {
         start++;
     }
 
-    // Trim trailing spaces
+
     while (end > start && isspace((unsigned char)*end))
     {
         end--;
     }
 
-    // Null-terminate the trimmed string
     *(end + 1) = '\0';
 
-    // Move the trimmed string to the start
     if (start != str)
     {
         memmove(str, start, (end - start + 1));
@@ -61,7 +58,7 @@ int main()
 
     int hostname = gethostname(buffer_sys, sizeof(buffer_sys));
     if (hostname == -1)
-    { // write error conditions for the gethostname()
+    { 
         perror("something's going wrong with gethostname()");
     }
 
@@ -88,8 +85,6 @@ int main()
 
             trim_newline(inp);
             trim_spaces(inp);
-            // printf("Input after spaces: %s\n", inp);
-            // inp[strlen(inp) - 1] = '\0';
         }
         else
         {
@@ -111,9 +106,7 @@ int main()
             trim_spaces(inp);
             printf("Input after spaces: %s\n", inp);
             
-            
-            // inp[strlen(inp) - 1] = '\0';
-            // printf("Input: %s\n", inp);
+          ;
         }
 
         tokenize(inp, current_dir, buffer_cwd);

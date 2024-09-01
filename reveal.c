@@ -3,12 +3,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include <dirent.h> // For directory operations
-// #include <sys/stat.h>  // For file information
-#include <unistd.h> // For getcwd
-// #include <pwd.h>  // For user info
-// #include <grp.h>  // For group info
-// #include <time.h>  // For formatting time
+#include <dirent.h>
+
+#include <unistd.h>
 
 void reveal(int number_of_args, char args[][100], char * cwd)
 {

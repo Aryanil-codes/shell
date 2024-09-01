@@ -5,7 +5,6 @@
 #define GREEN "\033[32m"
 #define RESET "\033[0m"
 
-//comment
 
 int is_directory(const char *path)
 {
@@ -50,13 +49,13 @@ int process_entry(const char *flags, const char *search, const char *full_path, 
     {
         print_path_with_color(full_path, is_dir);
         if (execute_flag && !is_dir)
-        { // Execute flag only applies to files
+        {
             print_file_contents(full_path);
         }
-        return 1; // Always return 1 if a match is found
+        return 1; 
     }
 
-    return 0; // Return 0 if no match
+    return 0; 
 }
 
 int seek_recursive(const char *flags, const char *search, const char *directory)
