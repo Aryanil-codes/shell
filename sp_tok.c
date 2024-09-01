@@ -40,6 +40,12 @@ void fg_exec(char *inp, char *home, char *cwd)
 {
     printf("FG: %s\n", inp);
 
+    if (strstr(inp, "seek") != NULL) {
+        char *new_str = inp + 5;
+        call_seek(new_str, cwd, home);
+        return;
+    } 
+
     char *token;
 
     char tokens[100][100];
