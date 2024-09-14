@@ -1,1 +1,3 @@
 pipes uses exec
+activities is not called before every exec
+

@@ -10,6 +10,7 @@
 #include"execute.h"
 #include"hop.h"
 #include"reveal.h"
+#include"activities.h"
 
 void execute(int count, char tokens[100][100]) {
     char *args[count + 1];  
@@ -30,7 +31,7 @@ void execute(int count, char tokens[100][100]) {
         perror("execvp failed"); 
         exit(EXIT_FAILURE);
     } else {
-        
+        add_process(fake_pid, args[0]);
         wait(NULL); 
     }
 }
@@ -42,6 +43,8 @@ void bg(int count, char tokens[100][100]) {
     }
     args[count] = NULL;  
 
+    // int child_pid;
+
     int fake_pid = fork();
     if (fake_pid < 0) {
         perror("fork failed");
@@ -49,10 +52,12 @@ void bg(int count, char tokens[100][100]) {
     } 
     else if (fake_pid == 0) {
         printf("Background process started with PID %d\n", getpid());
+        // child_pid = getpid();
         execvp(args[0], args);
         perror("execvp failed");  
         exit(EXIT_FAILURE);
     } else {
+        add_process(fake_pid, args[0]);
         printf("Parent process started background process with PID %d\n", fake_pid);
         
     }

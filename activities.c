@@ -51,6 +51,8 @@ void activities() {
     // Sort processes lexicographically by command name
     qsort(process_list, process_count, sizeof(Process), compare_processes);
 
+    //write the code where it updates process sattus of all processes
+
     // Print process details
     for (int i = 0; i < process_count; i++) {
         printf("[%d] : %s - %s\n", process_list[i].pid, process_list[i].command,

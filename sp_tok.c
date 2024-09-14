@@ -16,6 +16,7 @@
 #include "log.h"
 #include "seek.h"
 #include "activities.h"
+#include "iman.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -215,6 +216,8 @@ void pipe_exec(char *inp, char *home, char *cwd)
     }
 }
 
+// still init...............................................................................................................
+
 void bg_exec(char *inp)
 {
     char *token;
@@ -325,6 +328,18 @@ void fg_exec(char *inp, char *home, char *cwd)
     else if(!strcmp(tokens[0], "activities"))
     {
         activities();
+        return;
+    }
+    else if(!strcmp(tokens[0],"iman"))
+    {
+        // char empty[100];
+        // strcpy(empty,"iman");
+        if(tokens[1] == NULL)
+        {
+            printf("Invalid command\n");
+            return;
+        }
+        iman(tokens[1]);
         return;
     }
     else

@@ -10,6 +10,7 @@
 #include "reveal.h"
 #include "execute.h"
 #include "log.h"
+// #include "activities.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -111,6 +112,7 @@ int main()
         }
 
         tokenize(inp, current_dir, buffer_cwd);
+        
     }
 
     return 0;

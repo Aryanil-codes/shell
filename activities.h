@@ -17,8 +17,4 @@ void activities();
 
 
 
-typedef struct {
-    int pid;
-    char command[256];
-    bool is_running; // true if running, false if stopped
-} Process;
+struct Process;
