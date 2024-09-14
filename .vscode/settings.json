@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "reveal.h": "c",
-        "token.h": "c"
+        "token.h": "c",
+        "termios.h": "c"
     }
 }

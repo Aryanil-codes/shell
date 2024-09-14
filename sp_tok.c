@@ -17,6 +17,7 @@
 #include "seek.h"
 #include "activities.h"
 #include "iman.h"
+#include "neonate.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -340,6 +341,16 @@ void fg_exec(char *inp, char *home, char *cwd)
             return;
         }
         iman(tokens[1]);
+        return;
+    }
+    else if(!strcmp(tokens[0],"neonate"))
+    {
+        if(tokens[1] == NULL)
+        {
+            printf("Invalid command\n");
+            return;
+        }
+        neonate(atoi(tokens[2]));
         return;
     }
     else

@@ -102,7 +102,7 @@ void iman(char *command) {
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(80);
-    memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);
+    memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);  //false error
 
     // Connect to the server
     if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
