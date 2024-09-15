@@ -397,23 +397,28 @@ void fg_exec(char *inp, char *home, char *cwd)
     args[count] = NULL;     // NULL terminator for execvp
     args[count + 1] = NULL; //safe
 
-    int fake_pid = fork();
-    if (fake_pid < 0)
-    {
-        perror("fork failed");
-        exit(EXIT_FAILURE);
-    }
-    else if (fake_pid == 0)
-    {
-        // Child process
-        execvp(args[0], args);
+    // int start_time = 0,endtime =0, status;
+    // int fake_pid = fork();
+    // if (fake_pid < 0)
+    // {
+    //     perror("fork failed");
+    //     exit(EXIT_FAILURE);
+    // }
+    // else if (fake_pid == 0)
+    // {
+    //     // Child process
+    //     execvp(args[0], args);
     
-        perror("execvp failed");
-        exit(EXIT_FAILURE);
-    }
-    else
-    {
-        // Parent process
-        wait(NULL);
-    }
+    //     perror("execvp failed");
+    //     exit(EXIT_FAILURE);
+    // }
+    // else
+    // {
+    //     // Parent process
+    //     waitpid(fake_pid, &status, WUNTRACED);
+    //     endtime = time(NULL);
+    //     fg_prompt = endtime - start_time;
+    //     printf("fgpromt - %d\n",fg_prompt);
+    //     strcpy(fg_prompt_name, args[0]);
+    // }
 }

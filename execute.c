@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include<time.h>
 
 #include<fcntl.h>
 #include <unistd.h>
@@ -14,6 +15,9 @@
 #include"extra.h"
 
 void execute(int count, char tokens[100][100]) {
+
+    int start_time = time(NULL),endtime =0, status;
+
     char *args[count + 1];  
     for (int i = 0; i < count; i++) {
         args[i] = tokens[i];
@@ -32,7 +36,12 @@ void execute(int count, char tokens[100][100]) {
         perror("execvp failed"); 
         exit(EXIT_FAILURE);
     } else {
-        wait(NULL); 
+        // Parent process
+        waitpid(fake_pid, &status, WUNTRACED);
+        endtime = time(NULL);
+        fg_prompt = endtime - start_time;
+        printf("fgpromt - %d\n",fg_prompt);
+        strcpy(fg_prompt_name, args[0]);
     }
 }
 

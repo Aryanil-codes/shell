@@ -10,10 +10,14 @@
 #include "reveal.h"
 #include "execute.h"
 #include "log.h"
+#include "extra.h"
 // #include "activities.h"
 
 #include <fcntl.h>
 #include <unistd.h>
+
+int fg_prompt = 0;
+char fg_prompt_name[100];
 
 void trim_newline(char *str)
 {
@@ -72,14 +76,37 @@ int main()
 
         if (strlen(current_dir) < strlen(buffer_cwd))
         {
-            printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, current_dir);
-            fgets(inp, 1024, stdin);
-            // printf("Input: %s\n", inp);
+            if (fg_prompt == 0)
+            {
+                printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, current_dir);
+                fgets(inp, 1024, stdin);
+                // printf("Input: %s\n", inp);
 
-            store_log(inp);
+                store_log(inp);
 
-            trim_newline(inp);
-            trim_spaces(inp);
+                trim_newline(inp);
+                trim_spaces(inp);
+            }
+            else{
+                printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m%s:%d>", username, buffer_sys, current_dir,fg_prompt_name, fg_prompt);
+                fg_prompt = 0;
+                fgets(inp, 1024, stdin);
+                // printf("Input: %s\n", inp);
+
+                store_log(inp);
+
+                trim_newline(inp);
+                trim_spaces(inp);
+            }
+            
+            // printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, current_dir);
+            // fgets(inp, 1024, stdin);
+            // // printf("Input: %s\n", inp);
+
+            // store_log(inp);
+
+            // trim_newline(inp);
+            // trim_spaces(inp);
         }
         else
         {
@@ -91,17 +118,41 @@ int main()
                 final_cwd[i - len + 1] = current_dir[i];
             }
             final_cwd[strlen(current_dir) - len + 2] = '\0';
+            //-----------------------------------------------------------------------------------------------------
+            if (fg_prompt == 0)
+            {
+                printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, final_cwd);
+                fgets(inp, 1024, stdin);
+                // printf("Input: %s\n", inp);
 
-            printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, final_cwd);
-            fgets(inp, 1024, stdin);
+                store_log(inp);
 
-            store_log(inp);
+                trim_newline(inp);
+                trim_spaces(inp);
+            }
+            else{
+                printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m%s:%d>", username, buffer_sys, final_cwd,fg_prompt_name, fg_prompt);
+                fg_prompt = 0;
+                fgets(inp, 1024, stdin);
+                // printf("Input: %s\n", inp);
+
+                store_log(inp);
+
+                trim_newline(inp);
+                trim_spaces(inp);
+            }
+            //-----------------------------------------------------------------------------------------------------
             
-            trim_newline(inp);
-            trim_spaces(inp);
+            // printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, final_cwd);
+            // fgets(inp, 1024, stdin);
+
+            // store_log(inp);
+            
+            // trim_newline(inp);
+            // trim_spaces(inp);
             // printf("Input after spaces: %s\n", inp);
             
-          ;
+        //   ;
         }
 
         tokenize(inp, current_dir, buffer_cwd);

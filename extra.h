@@ -6,6 +6,9 @@
 #include <string.h>
 #include <sys/wait.h>
 
+extern int fg_prompt;
+extern char fg_prompt_name[100];
+
 void sigchld_handler(int signum);
 
 void quit();
