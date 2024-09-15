@@ -1,159 +1,166 @@
 #include "iman.h"
 
-#define BUFFER_SIZE 4096
-#define RESET   "\x1b[0m"
-#define RED     "\x1b[31m"
-#define BOLD "\x1b[1m"
+#define BUF_SIZE 4096
+#define RESET_COLOR "\x1b[0m"
+#define TEXT_RED "\x1b[31m"
+#define TEXT_BOLD "\x1b[1m"
 
-void replace_substring(char *str, const char *old_sub, const char *new_sub)
+void swap_substring(char *text, const char *old_part, const char *new_part)
 {
-    char buffer[BUFFER_SIZE];
-    char *pos, *temp = str;
-    int old_len = strlen(old_sub);
-    int new_len = strlen(new_sub);
+    char temp_buf[BUF_SIZE];
+    char *found, *cursor = text;
+    int old_len = strlen(old_part);
+    int new_len = strlen(new_part);
 
-    buffer[0] = '\0'; // Initialize buffer to an empty string
+    temp_buf[0] = '\0'; // empty buffer
 
-    // Iterate over the string and replace occurrences of old_sub
-    while ((pos = strstr(temp, old_sub)) != NULL)
+    // loop through the string and swap out the old_part with new_part
+    while ((found = strstr(cursor, old_part)) != NULL)
     {
-        // Copy part before the match
-        strncat(buffer, temp, pos - temp);
+        // copy the segment before the match
+        strncat(temp_buf, cursor, found - cursor);
 
-        // Append the new substring
-        strcat(buffer, new_sub);
+        // put the new substring
+        strcat(temp_buf, new_part);
 
-        // Move temp to continue searching after the old substring
-        temp = pos + old_len;
+        // move the cursor forward after the replaced substring
+        cursor = found + old_len;
     }
 
-    // Append the remainder of the string after the last occurrence of old_sub
-    strcat(buffer, temp);
+    // put any remaining part of the string
+    strcat(temp_buf, cursor);
 
-    // Ensure the resulting string fits into the original string buffer
-    strcpy(str, buffer);
+    // copy the result back into the original string
+    strcpy(text, temp_buf);
 }
 
-// Function to parse and print the response body (removing HTML tags)
-void parse_and_print_output(char *buffer) {
-    int in_tag = 0;  // Flag to track whether we're inside an HTML tag
+// removing HTML tags
+void print_clean_output(char *content)
+{
+    int inside_tag = 0; // Track inside an HTML tag
 
-    replace_substring(buffer, "<br>", "\n");
-    replace_substring(buffer, "<strong>", BOLD );
-    replace_substring(buffer, "</strong>", RESET );
+    swap_substring(content, "<br>", "\n");
+    swap_substring(content, "<strong>", TEXT_BOLD);
+    swap_substring(content, "</strong>", RESET_COLOR);
 
-
-    for (const char *p = buffer; *p != '\0'; p++) {
-        if (*p == '<') {
-            in_tag = 1;  // Entering an HTML tag
-        } else if (*p == '>') {
-            in_tag = 0;  // Exiting an HTML tag
-        } else if (!in_tag) {
-            putchar(*p);  // Print character only if it's outside of a tag
+    for (const char *p = content; *p != '\0'; p++)
+    {
+        if (*p == '<')
+        {
+            inside_tag = 1; // enter an HTML tag
+        }
+        else if (*p == '>')
+        {
+            inside_tag = 0; // exit an HTML tag
+        }
+        else if (!inside_tag)
+        {
+            putchar(*p); // print character only if it's outside of a tag
         }
     }
 }
 
-// Function to send GET request and print response (without headers and HTML tags)
-void iman(char *command) {
-    if (strlen(command) == 0) {
-        printf(RED"Usage: iMan command\n"RESET);
+// to send a GET request and display response
+void iman(char *command)
+{
+    if (strlen(command) == 0)
+    {
+        printf(TEXT_RED "Usage: iMan <command>\n" RESET_COLOR);
         return;
     }
 
     char cmd_copy[256];
     strncpy(cmd_copy, command, sizeof(cmd_copy) - 1);
-    cmd_copy[sizeof(cmd_copy) - 1] = '\0';  // Ensure null termination
-    char *first_token = strtok(cmd_copy, " ");
-    if (first_token == NULL) {
-        printf(RED"Usage: iMan command\n"RESET);
+    cmd_copy[sizeof(cmd_copy) - 1] = '\0'; // null termination
+    char *cmd_token = strtok(cmd_copy, " ");
+    if (cmd_token == NULL)
+    {
+        printf(TEXT_RED "Usage: iMan <command>\n" RESET_COLOR);
         return;
     }
 
-    const char *host = "man.he.net";
-    const char *path_format = "/?topic=%s&section=all";
-    char path[256];
-    char request[512];
-    struct sockaddr_in server_addr;
+    const char *hostname = "man.he.net";
+    const char *url_format = "/?topic=%s&section=all";
+    char url_path[256];
+    char http_request[512];
+    struct sockaddr_in server_address;
     struct hostent *server;
     int sockfd;
-    char buffer[BUFFER_SIZE];
+    char read_buf[BUF_SIZE];
     int bytes_read;
-    int in_body = 0;  // Flag to check if we're in the body part of the response
+    int body_started = 0;
 
-    // Format the path with the command
-    snprintf(path, sizeof(path), path_format, first_token);
+    // format the URL path with the command
+    snprintf(url_path, sizeof(url_path), url_format, cmd_token);
 
-    // Create a socket
+    // create a socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) {
-        perror("Error creating socket");
+    if (sockfd < 0)
+    {
+        perror("Socket creation error");
         exit(EXIT_FAILURE);
     }
 
-    // Get the server's DNS entry
-    server = gethostbyname(host);
-    if (server == NULL) {
-        fprintf(stderr, "Error, no such host\n");
+    // look up the server's DNS entry
+    server = gethostbyname(hostname);
+    if (server == NULL)
+    {
+        fprintf(stderr, "Error: No such host\n");
         exit(EXIT_FAILURE);
     }
 
-    // Set up the server address structure
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(80);
-    memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);  //false error
+    // set up the server address structure
+    memset(&server_address, 0, sizeof(server_address));
+    server_address.sin_family = AF_INET;
+    server_address.sin_port = htons(80);
+    memcpy(&server_address.sin_addr.s_addr, server->h_addr, server->h_length); // false error
 
-    // Connect to the server
-    if (connect(sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        perror("Error connecting to server");
+    // connect to the server
+    if (connect(sockfd, (struct sockaddr *)&server_address, sizeof(server_address)) < 0)
+    {
+        perror("Connection error");
         close(sockfd);
         exit(EXIT_FAILURE);
     }
 
-    // Create the GET request
-    snprintf(request, sizeof(request),
+    // create the HTTP GET request
+    snprintf(http_request, sizeof(http_request),
              "GET %s HTTP/1.0\r\n"
              "Host: %s\r\n"
              "Connection: close\r\n\r\n",
-             path, host);
+             url_path, hostname);
 
-    // Send the GET request
-    if (write(sockfd, request, strlen(request)) < 0) {
-        perror("Error sending request");
+    // send the GET request
+    if (write(sockfd, http_request, strlen(http_request)) < 0)
+    {
+        perror("Request send error");
         close(sockfd);
         exit(EXIT_FAILURE);
     }
 
-    // Read the response, skip headers, and process the body
-    while ((bytes_read = read(sockfd, buffer, sizeof(buffer) - 1)) > 0) {
-        buffer[bytes_read] = '\0';
+    // read and process the response
+    while ((bytes_read = read(sockfd, read_buf, sizeof(read_buf) - 1)) > 0)
+    {
+        read_buf[bytes_read] = '\0';
 
-        // If not in the body, search for the end of the headers
-        if (!in_body) {
-            char *body_start = strstr(buffer, "<html>");
-            if (body_start != NULL) {
-                body_start += 4;  // Skip the "\r\n\r\n" part
-                parse_and_print_output(body_start);  // Parse and print body content
-                in_body = 1;  // Mark that we're now in the body
+        // skip headers
+        if (!body_started)
+        {
+            char *html_start = strstr(read_buf, "<html>");
+            if (html_start != NULL)
+            {
+                html_start += 4;                // Skip the "\r\n\r\n" part
+                print_clean_output(html_start); // Clean up and print the content
+                body_started = 1;               // Mark that we're in the body now
             }
-        } else {
-            // Already in the body, parse and print content
-            parse_and_print_output(buffer);
+        }
+        else
+        {
+            // print the clean content
+            print_clean_output(read_buf);
         }
     }
 
-    // Clean up
+    // close socket
     close(sockfd);
 }
-
-// int main(int argc, char *argv[]) {
-//     if (argc != 2) {
-//         fprintf(stderr, "Usage: %s <command_name>\n", argv[0]);
-//         exit(EXIT_FAILURE);
-//     }
-
-//     fetch_man_page(argv[1]);
-
-//     return 0;
-// }

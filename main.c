@@ -12,7 +12,6 @@
 #include "execute.h"
 #include "log.h"
 #include "extra.h"
-#include "shrc.h"
 // #include "activities.h"
 
 #include <fcntl.h>

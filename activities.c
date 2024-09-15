@@ -3,7 +3,7 @@
 Process process_list[MAX_PROCESSES];
 int process_count = 0;
 
-void add_process(int pid, const char *command)
+void add_proc(int pid, const char *command)
 {
     if (process_count < MAX_PROCESSES)
     {

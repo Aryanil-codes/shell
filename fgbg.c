@@ -1,33 +1,43 @@
 #include "fgbg.h"
 
-void ifg(int pid) {
+void ifg(int pid)
+{
     // Send SIGCONT to the background process
     fg_pid = pid;
-    if (kill(pid, SIGCONT) == -1) {
+    if (kill(pid, SIGCONT) == -1)
+    {
         perror("Failed to send SIGCONT signal");
         return;
     }
 
     // Wait for the process to finish
     int status;
-    if (waitpid(pid, &status, WUNTRACED) == -1) {
+    if (waitpid(pid, &status, WUNTRACED) == -1)
+    {
         perror("Failed to wait for process");
         return;
     }
 
-    // Check if the process was stopped or terminated
-    if (WIFEXITED(status)) {
+    // checking if process was stopped or terminated
+    if (WIFEXITED(status))
+    {
         printf("Process %d exited with status %d\n", pid, WEXITSTATUS(status));
-    } else if (WIFSIGNALED(status)) {
+    }
+    else if (WIFSIGNALED(status))
+    {
         printf("Process %d was killed by signal %d\n", pid, WTERMSIG(status));
-    } else if (WIFSTOPPED(status)) {
+    }
+    else if (WIFSTOPPED(status))
+    {
         printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
     }
 }
 
-void ibg(int pid) {
-    // Send SIGCONT to the background process
-    if (kill(pid, SIGCONT) == -1) {
+void ibg(int pid)
+{
+    // sending SIGCONT to the background process
+    if (kill(pid, SIGCONT) == -1)
+    {
         perror("Failed to send SIGCONT signal");
         return;
     }

@@ -3,6 +3,7 @@
         "reveal.h": "c",
         "token.h": "c",
         "termios.h": "c",
-        "extra.h": "c"
+        "extra.h": "c",
+        "execute.h": "c"
     }
 }

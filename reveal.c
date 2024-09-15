@@ -7,10 +7,10 @@
 
 #include <unistd.h>
 
-void reveal(int number_of_args, char args[][100], char * cwd)
+void reveal(int number_of_args, char args[][100], char *cwd)
 {
-    bool l=false;
-    bool a=false;
+    bool l = false;
+    bool a = false;
     // char cwd[4096];
     // getcwd(cwd, sizeof(cwd));
     if (number_of_args == 0)
@@ -25,7 +25,8 @@ void reveal(int number_of_args, char args[][100], char * cwd)
 
         while (entity != NULL)
         {
-            if (entity->d_name[0] != '.') {
+            if (entity->d_name[0] != '.')
+            {
                 printf("%s\n", entity->d_name);
             }
             entity = readdir(dir);
@@ -35,20 +36,19 @@ void reveal(int number_of_args, char args[][100], char * cwd)
     }
     else if (number_of_args == 1)
     {
-        if (args[1][0]=='-')
+        if (args[1][0] == '-')
         {
             for (int i = 1; i < strlen(args[1]); i++)
             {
-                if (args[1][i]=='l')
+                if (args[1][i] == 'l')
                 {
                     l = true;
                 }
-                else if(args[1][i]=='a')
+                else if (args[1][i] == 'a')
                 {
                     printf("it enters this part \n");
                     a = true;
                 }
-                
             }
 
             DIR *dir = opendir(cwd);
@@ -61,12 +61,11 @@ void reveal(int number_of_args, char args[][100], char * cwd)
 
             while (entity != NULL)
             {
-                printf("%s\n", entity->d_name);   
+                printf("%s\n", entity->d_name);
                 entity = readdir(dir);
             }
 
             closedir(dir);
-            
         }
         else
         {
@@ -81,7 +80,8 @@ void reveal(int number_of_args, char args[][100], char * cwd)
 
             while (entity != NULL)
             {
-                if (entity->d_name[0] != '.') {
+                if (entity->d_name[0] != '.')
+                {
                     printf("%s\n", entity->d_name);
                 }
                 entity = readdir(dir);
@@ -90,39 +90,42 @@ void reveal(int number_of_args, char args[][100], char * cwd)
             closedir(dir);
         }
     }
-    else if(number_of_args>1){
+    else if (number_of_args > 1)
+    {
         // for multiple args (repeat)
         int counter = 1;
-        if (args[counter][0]=='-')
+        if (args[counter][0] == '-')
         {
-            while(counter<=number_of_args){
+            while (counter <= number_of_args)
+            {
                 for (int i = 1; i < strlen(args[counter]); i++)
                 {
                     // printf("outside i = %d\n and counter = %d\n\n",i,counter);
-                    if (args[counter][i]=='l')
+                    if (args[counter][i] == 'l')
                     {
                         // printf("inside l - counter - %d, i = %d\n",counter,i);
                         l = true;
                     }
-                    else if(args[counter][i]=='a')
+                    else if (args[counter][i] == 'a')
                     {
                         // printf("it enters this part \n");
                         a = true;
                     }
-                    
                 }
-                counter ++;
+                counter++;
             }
 
             if (a && l)
             {
                 printf("both a and l are there\n");
             }
-            else if(a || l){
-                if(a) printf("only a is there\n");
-                else printf("only l is there\n");
+            else if (a || l)
+            {
+                if (a)
+                    printf("only a is there\n");
+                else
+                    printf("only l is there\n");
             }
-            
 
             DIR *dir = opendir(cwd);
             if (dir == NULL)
@@ -134,13 +137,11 @@ void reveal(int number_of_args, char args[][100], char * cwd)
 
             while (entity != NULL)
             {
-                printf("%s\n", entity->d_name);   
+                printf("%s\n", entity->d_name);
                 entity = readdir(dir);
             }
 
             closedir(dir);
-            
         }
     }
-
 }

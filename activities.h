@@ -18,7 +18,7 @@ typedef struct {
 
 extern Process process_list[MAX_PROCESSES];
 
-void add_process(int pid, const char *command);
+void add_proc(int pid, const char *command);
 
 int compare_processes(const void *a, const void *b);
 

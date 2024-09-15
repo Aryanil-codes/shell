@@ -7,7 +7,3 @@
 void disableRawMode();
 
 void enableRawMode() ;
-
-// void set_nonblocking_input();
-
-// void reset_nonblocking_input();
