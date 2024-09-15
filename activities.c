@@ -1,16 +1,17 @@
 #include"activities.h"
 
-#define MAX_PROCESSES 100
+// #define MAX_PROCESSES 100
 
 // Struct to store process information
-typedef struct {
-    int pid;
-    char command[256];
-    bool is_running; // true if running, false if stopped
-    bool is_ded;
-} Process;
+// typedef struct {
+//     int pid;
+//     char command[256];
+//     bool is_running; // true if running, false if stopped
+//     bool is_ded;
+// } Process;
 
 Process process_list[MAX_PROCESSES];
+// Process process_list[MAX_PROCESSES];
 int process_count = 0;
 
 // Function to add a process to the process list
@@ -24,6 +25,18 @@ void add_process(int pid, const char *command) {
     } else {
         printf("Process list full!\n");
     }
+}
+
+void run_to_stop(int pid){
+    for (int i = 0; i < process_count; i++)
+    {
+        if(process_list[i].pid == pid){
+            process_list[i].is_running = false;
+            break;
+        }
+    }
+    return;
+    
 }
 
 // Function to update the status of a process (running or stopped)

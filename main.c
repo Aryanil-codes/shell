@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <termios.h>
+#include <signal.h>
 // #include <argp.h>
 
 #include "hop.h"
@@ -16,7 +17,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+
 int fg_prompt = 0;
+int fg_pid = 0;
 char fg_prompt_name[100];
 
 void trim_newline(char *str)
@@ -48,6 +51,9 @@ void trim_spaces(char *str)
 int main()
 {
 
+    signal(SIGINT, sigint_handler);
+    signal(SIGTSTP, sigtstp_handler);
+
     char buffer_sys[100];
     char buffer_cwd[900];
     char current_dir[900];
@@ -76,11 +82,15 @@ int main()
 
         if (strlen(current_dir) < strlen(buffer_cwd))
         {
-            if (fg_prompt == 0)
+            if (fg_prompt < 2)
             {
                 printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, current_dir);
                 fgets(inp, 1024, stdin);
                 // printf("Input: %s\n", inp);
+
+                if(feof(stdin)){
+                    exit(0);
+                }
 
                 store_log(inp);
 
@@ -92,6 +102,9 @@ int main()
                 fg_prompt = 0;
                 fgets(inp, 1024, stdin);
                 // printf("Input: %s\n", inp);
+                if(feof(stdin)){
+                    exit(0);
+                }
 
                 store_log(inp);
 
@@ -119,11 +132,15 @@ int main()
             }
             final_cwd[strlen(current_dir) - len + 2] = '\0';
             //-----------------------------------------------------------------------------------------------------
-            if (fg_prompt == 0)
+            if (fg_prompt < 2)
             {
                 printf("\033[0;33m<%s@%s:\033[0;35m%s\033[1;0m>", username, buffer_sys, final_cwd);
                 fgets(inp, 1024, stdin);
                 // printf("Input: %s\n", inp);
+
+                if(feof(stdin)){
+                    exit(0);
+                }
 
                 store_log(inp);
 
@@ -135,6 +152,10 @@ int main()
                 fg_prompt = 0;
                 fgets(inp, 1024, stdin);
                 // printf("Input: %s\n", inp);
+
+                if(feof(stdin)){
+                    exit(0);
+                }
 
                 store_log(inp);
 

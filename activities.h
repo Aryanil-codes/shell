@@ -7,11 +7,22 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+#define MAX_PROCESSES 100
+
+typedef struct {
+    int pid;
+    char command[256];
+    bool is_running; // true if running, false if stopped
+    bool is_ded;
+} Process;
+
+extern Process process_list[MAX_PROCESSES];
+
 void add_process(int pid, const char *command);
 
-void update_process_status(int pid, bool is_running); 
-
 int compare_processes(const void *a, const void *b);
+
+void run_to_stop(int pid);
 
 void activities();
 

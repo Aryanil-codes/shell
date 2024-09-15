@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "extra.h"
+
 
 void ifg(int pid);
 void ibg(int pid);

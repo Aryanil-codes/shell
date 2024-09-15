@@ -2,6 +2,7 @@
 
 void ifg(int pid) {
     // Send SIGCONT to the background process
+    fg_pid = pid;
     if (kill(pid, SIGCONT) == -1) {
         perror("Failed to send SIGCONT signal");
         return;

@@ -3,6 +3,7 @@ activities is not called before every exec
 vim , emacs and all should be stopped in background 
 line should not be printing when bg is showed
 change the iman file
+proc from bg to fg must show in terminal prompt
 
 
 
@@ -13,3 +14,8 @@ do:
 .basrc
 ctrl-c,z,d
 
+5-6: ctrl c/z/d
+6-7: shrc
+7-9:fixing bugs
+9-10 : readme
+10-11 : small fixes

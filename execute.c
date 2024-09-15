@@ -37,10 +37,13 @@ void execute(int count, char tokens[100][100]) {
         exit(EXIT_FAILURE);
     } else {
         // Parent process
+        fg_pid = fake_pid;
+        // printf("pid is - %d",fg_pid);
         waitpid(fake_pid, &status, WUNTRACED);
         endtime = time(NULL);
         fg_prompt = endtime - start_time;
-        printf("fgpromt - %d\n",fg_prompt);
+        fg_pid = fake_pid;
+        // printf("fgpromt - %d\n",fg_prompt);
         strcpy(fg_prompt_name, args[0]);
     }
 }
