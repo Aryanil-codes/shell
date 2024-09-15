@@ -18,8 +18,7 @@
 void trim_newline(char *str)
 {
     int len = strlen(str);
-    if (len > 0 && str[len - 1] == '\n')
-    {
+    if (len > 0 && str[len - 1] == '\n'){
         str[len - 1] = '\0';
     }
 }
@@ -29,21 +28,15 @@ void trim_spaces(char *str)
     char *start = str;
     char *end = str + strlen(str);
 
-    while (isspace((unsigned char)*start))
-    {
+    while (isspace((unsigned char)*start)){
         start++;
     }
 
-
-    while (end > start && isspace((unsigned char)*end))
-    {
+    while (end > start && isspace((unsigned char)*end)){
         end--;
     }
-
     *(end + 1) = '\0';
-
-    if (start != str)
-    {
+    if (start != str){
         memmove(str, start, (end - start + 1));
     }
 }

@@ -2,6 +2,7 @@
     "files.associations": {
         "reveal.h": "c",
         "token.h": "c",
-        "termios.h": "c"
+        "termios.h": "c",
+        "extra.h": "c"
     }
 }

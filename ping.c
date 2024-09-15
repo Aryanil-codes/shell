@@ -1,20 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
+#include "ping.h"
 
 void ping(int pid, int signal_num) {
     
     int mod_signal = signal_num % 32;
 
     if (kill(pid, 0) == -1) {
-        if (errno == ESRCH) {
-            printf("No such process found\n");
-        } else {
-            perror("Error checking process");
-        }
+        printf("No such process found\n");
         return;
     }
 

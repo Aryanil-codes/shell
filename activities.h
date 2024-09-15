@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 void add_process(int pid, const char *command);
 

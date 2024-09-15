@@ -104,5 +104,6 @@ void amp_tokenize(char *line, char* cwd, char* home)
         }
         token = strtok_r(NULL, "&", &saveptr);
     }
+    return;
 }
 

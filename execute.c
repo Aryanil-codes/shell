@@ -11,6 +11,7 @@
 #include"hop.h"
 #include"reveal.h"
 #include"activities.h"
+#include"extra.h"
 
 void execute(int count, char tokens[100][100]) {
     char *args[count + 1];  
@@ -31,7 +32,6 @@ void execute(int count, char tokens[100][100]) {
         perror("execvp failed"); 
         exit(EXIT_FAILURE);
     } else {
-        add_process(fake_pid, args[0]);
         wait(NULL); 
     }
 }
@@ -51,16 +51,20 @@ void bg(int count, char tokens[100][100]) {
         exit(EXIT_FAILURE);
     } 
     else if (fake_pid == 0) {
-        printf("Background process started with PID %d\n", getpid());
+        // printf("\nBackground process started with PID %d\n", getpid());
         // child_pid = getpid();
+        setpgid(0, 0); //setting group pid to differ from fg proc
         execvp(args[0], args);
         perror("execvp failed");  
         exit(EXIT_FAILURE);
     } else {
         add_process(fake_pid, args[0]);
         printf("Parent process started background process with PID %d\n", fake_pid);
+        signal(SIGCHLD, SIG_IGN); //igone child signal
+        signal(SIGCHLD, sigchld_handler);
         
     }
+    return;
 }
 
 void fg(int count, char tokens[100][100], char *buffer_cwd, char *current_dir) {

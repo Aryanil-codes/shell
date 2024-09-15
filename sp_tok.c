@@ -18,6 +18,9 @@
 #include "activities.h"
 #include "iman.h"
 #include "neonate.h"
+#include "extra.h"
+#include "ping.h"
+#include "fgbg.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -331,6 +334,14 @@ void fg_exec(char *inp, char *home, char *cwd)
         activities();
         return;
     }
+    else if(!strcmp(tokens[0],"bg")){
+        ibg(atoi(tokens[1]));
+        return;
+    }
+    else if(!strcmp(tokens[0],"fg")){
+        ifg(atoi(tokens[1]));
+        return;
+    }
     else if(!strcmp(tokens[0],"iman"))
     {
         // char empty[100];
@@ -343,6 +354,16 @@ void fg_exec(char *inp, char *home, char *cwd)
         iman(tokens[1]);
         return;
     }
+    else if(!strcmp(tokens[0],"ping"))
+    {
+        if(tokens[1] == NULL)
+        {
+            printf("Invalid command\n");
+            return;
+        }
+        ping(atoi(tokens[1]),atoi(tokens[2]));
+        return;
+    }
     else if(!strcmp(tokens[0],"neonate"))
     {
         if(tokens[1] == NULL)
@@ -351,6 +372,11 @@ void fg_exec(char *inp, char *home, char *cwd)
             return;
         }
         neonate(atoi(tokens[2]));
+        return;
+    }
+    else if(!strcmp(tokens[0],"quit"))
+    {
+        quit();
         return;
     }
     else

@@ -1,3 +1,15 @@
 pipes uses exec
 activities is not called before every exec
+vim , emacs and all should be stopped in background 
+line should not be printing when bg is showed
+change the iman file
+
+
+
+
+
+
+do:
+.basrc
+ctrl-c,z,d
 
