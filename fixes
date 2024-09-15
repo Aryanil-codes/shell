@@ -12,10 +12,21 @@ proc from bg to fg must show in terminal prompt
 
 do:
 .basrc
-ctrl-c,z,d
+<!-- ctrl-c,z,d -->
 
-5-6: ctrl c/z/d
-6-7: shrc
+<!-- 5-6: ctrl c/z/d -->
+6-7: shrc // not doing
 7-9:fixing bugs
 9-10 : readme
 10-11 : small fixes
+
+
+hop -  : is working weird
+hop ~/ : is working weird
+same with reveal
+proclore fix spelling and stuff
+ctrl-d : \n should come
+ctrl-z : fill the struct so that the name can come
+from bg to fg if sleep is extracted the command line doesnt show
+iman file change and first line remove
+iman : print the last error statement

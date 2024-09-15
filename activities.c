@@ -38,18 +38,6 @@ void run_to_stop(int pid){
     return;
     
 }
-
-// Function to update the status of a process (running or stopped)
-// void update_process_status(int pid, bool is_running) {
-//     for (int i = 0; i < process_count; i++) {
-//         if (process_list[i].pid == pid) {
-//             process_list[i].is_running = is_running;
-//             break;
-//         }
-//     }
-// }
-
-// Comparator function to sort processes lexicographically by command name
 int compare_processes(const void *a, const void *b) {
     Process *procA = (Process *)a;
     Process *procB = (Process *)b;
