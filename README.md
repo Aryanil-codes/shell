@@ -6,4 +6,5 @@
     make
     ./a.out
 
-
+# Spec 14
+1) As mentioned for CTRL-D, it can be worked *ONLY AFTER KILLING ALL PROCS*
