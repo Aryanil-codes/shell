@@ -26,7 +26,3 @@ void run_to_stop(int pid);
 
 void activities();
 
-
-
-
-struct Process;
